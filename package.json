@@ -9,17 +9,19 @@
     "prepare": "husky install",
     "prebuild": "rimraf dist",
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
+    "start": "cross-env NODE_ENV=localhost nest start --watch",
+    "start:dev": "cross-env NODE_ENV=localhost nest start --watch",
+    "prestart": "npm run build",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
+    "start:prod": "cross-env NODE_ENV=localhost node dist/src/main",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix && prettier --write \"src/**/*.ts\"",
+    "lint:check": "eslint \"{src,apps,libs,test}/**/*.ts\" && prettier --check \"src/**/*.ts\"",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch --maxWorkers=1",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "db": "cross-env NODE_ENV=localhost ts-node ./node_modules/typeorm/cli.js"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -40,7 +42,10 @@
     "@nestjs/passport": "^9.0.0",
     "@nestjs/jwt": "^9.0.0",
     "@nestjs/mapped-types": "*",
-    "@nestjs/config": "^2.2.0"
+    "@nestjs/config": "^2.2.0",
+    "typeorm": "^0.2.41",
+    "pg": "^8.7.3",
+    "cross-env": "^7.0.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
@@ -64,11 +69,11 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.1.0",
     "typescript": "^4.7.4",
-    "@commitlint/cli": "^17.1.2",
-    "@commitlint/config-conventional": "^17.1.0",
     "@types/express-serve-static-core": "^4.17.30",
     "@types/multer": "^1.4.7",
-    "husky": "^8.0.1"
+    "husky": "^8.0.1",
+    "sonar-scanner": "^3.1.0",
+    "git-commit-msg-linter": "^4.0.7"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -86,10 +91,5 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
   }
 }
