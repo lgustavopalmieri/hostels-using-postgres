@@ -1,7 +1,11 @@
 .env
+.env.development
+.env.test
+/database
 # compiled output
 /dist
 /node_modules
+
 
 # Logs
 logs
