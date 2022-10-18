@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import getConfig from './config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 const config = getConfig();
 
@@ -22,7 +20,7 @@ const DATABASE_SETUP = [
 
 @Module({
   imports: [...DATABASE_SETUP],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
