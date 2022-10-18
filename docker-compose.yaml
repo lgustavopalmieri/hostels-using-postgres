@@ -1,0 +1,29 @@
+version: "3.7"
+
+services:
+  hostels-api:
+    container_name: hostels-api
+    image: hostels-api
+    build: .
+    ports:
+      - 6000:6000
+    environment:
+      - MODE=dev
+    networks:
+      - hostels-api-net
+      - hostels-api-net-db
+    volumes:
+      - hostels-api:/app/node_modules
+      - .:/app
+
+networks:
+  hostels-api-net:
+    name: hostels-api-net
+  
+  hostels-api-net-db:
+    external:
+      name: hostels-api-net-db
+
+volumes:
+  hostels-api:
+    name: hostels-api
