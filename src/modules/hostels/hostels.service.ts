@@ -1,11 +1,31 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import Location from 'src/features/geolocation';
+import { Repository } from 'typeorm';
 import { CreateHostelDto } from './dto/create-hostel.dto';
 import { UpdateHostelDto } from './dto/update-hostel.dto';
+import { Hostel } from './entities/hostel.entity';
 
 @Injectable()
 export class HostelsService {
-  create(createHostelDto: CreateHostelDto) {
-    return 'This action adds a new hostel';
+  constructor(
+    @InjectRepository(Hostel) private hostelRepo: Repository<Hostel>,
+  ) {}
+  async create(createHostelDto: CreateHostelDto) {
+    const hostelAddress = await Location.getLocation(createHostelDto.address);
+    console.log(hostelAddress);
+    const hostel = this.hostelRepo.create({
+      ...createHostelDto,
+      address: {
+        ...hostelAddress,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    return await this.hostelRepo.save(hostel);
   }
 
   findAll() {
