@@ -23,6 +23,7 @@ export class Hostel {
 
   @OneToOne(() => HostelAdress, (address) => address.hostel, {
     cascade: true,
+    eager: true,
   })
   address: HostelAdress;
 

@@ -5,6 +5,11 @@ import { Repository } from 'typeorm';
 import { CreateHostelDto } from './dto/create-hostel.dto';
 import { UpdateHostelDto } from './dto/update-hostel.dto';
 import { Hostel } from './entities/hostel.entity';
+import {
+  paginate,
+  Pagination,
+  IPaginationOptions,
+} from 'nestjs-typeorm-paginate';
 
 @Injectable()
 export class HostelsService {
@@ -28,8 +33,8 @@ export class HostelsService {
     return await this.hostelRepo.save(hostel);
   }
 
-  findAll() {
-    return `This action returns all hostels`;
+  async paginate(options: IPaginationOptions): Promise<Pagination<Hostel>> {
+    return paginate<Hostel>(this.hostelRepo, options);
   }
 
   findOne(id: number) {
