@@ -18,7 +18,7 @@ export class HostelsService {
   ) {}
   async create(createHostelDto: CreateHostelDto) {
     const hostelAddress = await Location.getLocation(createHostelDto.address);
-    console.log(hostelAddress);
+
     const hostel = this.hostelRepo.create({
       ...createHostelDto,
       address: {
