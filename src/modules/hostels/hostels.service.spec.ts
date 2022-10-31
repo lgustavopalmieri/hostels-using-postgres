@@ -54,5 +54,14 @@ describe('HostelsService', () => {
       expect(result.name).toBe('Testing Hostels');
       expect(result.address).toMatchObject(adressMock);
     });
+    it('Should throw an error if new Hostel exits', async () => {
+      jest
+        .spyOn(mockHostelRepository, 'create')
+        .mockImplementationOnce(() => Promise.resolve(mockHostel));
+
+      jest
+        .spyOn(mockHostelRepository, 'save')
+        .mockImplementationOnce(() => Promise.resolve(mockHostel));
+    });
   });
 });
